@@ -1,30 +1,10 @@
 import csv
 import io
-
-
-def validate_row(row, index):
-    """
-    Validates a single CSV row.
-    Returns (is_valid, error_message)
-    """
-
-    if len(row) < 4:
-        return False, f"Row {index + 1}: invalid column count"
-
-    date, type_, amount, memo = row
-
-    # Validate type
-    if type_.strip() not in ["Income", "Expense"]:
-        return False, f"Row {index + 1}: invalid type '{type_}'"
-
-    # Validate amount
-    try:
-        float(amount)
-    except:
-        return False, f"Row {index + 1}: invalid amount"
-
-    return True, None
-
+from validators.csv_validation import (
+    is_skippable_row,
+    validate_row,
+    is_duplicate
+)
 
 def parse_csv(file_content: str):
     """
@@ -35,15 +15,22 @@ def parse_csv(file_content: str):
 
     transactions = []
     errors = []
+    seen = set()
 
     csv_reader = csv.reader(io.StringIO(file_content))
 
     for index, row in enumerate(csv_reader):
 
+        if is_skippable_row(row):
+            continue
+
         is_valid, error = validate_row(row, index)
 
         if not is_valid:
             errors.append(error)
+            continue
+
+        if is_duplicate(row, seen):
             continue
 
         date, type_, amount, memo = row

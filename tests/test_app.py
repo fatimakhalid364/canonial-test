@@ -47,6 +47,10 @@ def test_report():
     assert "expenses" in data
     assert "net-revenue" in data
 
+    assert data["gross-revenue"] == 225.00
+    assert data["expenses"] == 72.93
+    assert data["net-revenue"] == 152.07
+
 
 # -------------------------
 # 4. Cleanup 

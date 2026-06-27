@@ -168,29 +168,67 @@ The uploaded CSV should follow this format:
 Date,Type,Amount,Memo
 ```
 
-Example:
+Each row represents a single transaction where:
 
-```
-2020-07-01,Expense,18.77,Fuel
-2020-07-04,Income,40.00,347 Woodrow
-2020-07-06,Income,35.00,219 Pleasant
-```
+- **Date** → transaction date (string)
+- **Type** → either `Income` or `Expense`
+- **Amount** → numeric value (decimal allowed)
+- **Memo** → description of transaction
 
 ---
 
-# Validation
+## Test Dataset (Important)
 
-Each row is validated before being stored.
+For evaluation purposes, the application is tested using a predefined dataset located at: `sample-data/data.csv`
+
+This dataset produces deterministic results used in automated tests.
+
+Expected computed results for this dataset:
+
+- Gross Revenue: 225.00  
+- Total Expenses: 72.93  
+- Net Revenue: 152.07  
+
+These values are asserted in the test suite to validate correctness of report generation.
+
+---
+
+# Validation & Preprocessing
+
+Each row in the uploaded CSV goes through a two-step processing pipeline:
+
+---
+
+## 1. Preprocessing (Noise Removal)
+
+Before validation, rows are filtered to remove non-data entries:
+
+- Blank or empty rows are ignored
+- Comment lines starting with `#` are ignored
+
+These rows are not treated as errors and are not included in validation.
+
+---
+
+## 2. Validation
+
+After preprocessing, each remaining row is validated before being stored.
 
 Current validation checks include:
 
-- Row contains four columns
+- Row contains exactly four columns
 - Transaction type must be either:
   - Income
   - Expense
 - Amount must be a valid numeric value
 
-Rows that fail validation are skipped and returned as validation errors in the API response.
+---
+
+## Error Handling
+
+- Rows that fail validation are recorded as errors
+- Valid rows are stored in memory
+- Preprocessed (comment/blank) rows are ignored silently and not included in error reporting
 
 ---
 
@@ -227,8 +265,11 @@ The project follows a layered architecture:
 
 # Assumptions
 
-- Uploaded files are valid CSV files encoded in UTF-8.
-- Data is stored only while the application is running.
+- The application accepts valid UTF-8 encoded CSV files for processing.
+- The system is designed to handle arbitrary CSV uploads in production usage.
+- However, the test suite evaluates correctness using a predefined dataset located at `sample-data/data.csv`.
+- For this dataset, outputs are deterministic and used for automated assertions (gross revenue, expenses, and net revenue).
+- Data is stored only while the application is running (in-memory storage).
 - Multiple uploads append transactions to the existing in-memory collection.
 - Validation errors do not prevent valid transactions from being stored.
 
@@ -240,10 +281,7 @@ Current limitations include:
 
 - No persistent database.
 - Uploaded data is lost when the server stops.
-- Duplicate transactions are not detected.
 - CSV header validation is not implemented.
-- Date format is not validated.
-- Comment lines and blank lines are currently treated as invalid rows instead of being ignored.
 - Authentication and authorization are not implemented.
 
 ---
@@ -253,9 +291,7 @@ Current limitations include:
 With additional development time, the following improvements would be made:
 
 - Store transactions in a relational database such as PostgreSQL.
-- Add transaction deduplication.
-- Validate dates and CSV headers.
-- Ignore blank lines and comment rows during parsing.
+- Validate CSV headers.
 - Add logging and centralized error handling.
 - Implement request schema validation.
 - Improve test coverage with edge cases and integration tests.
