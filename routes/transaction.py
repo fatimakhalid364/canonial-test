@@ -8,15 +8,29 @@ transactions_bp = Blueprint("transactions", __name__)
 def upload_transactions():
 
     """
-    Accepts a CSV file upload, validates each row, stores valid
+    Accepts a CSV file upload, checks for empty or invalid utf-8 files, validates each row, stores valid
     transactions in memory, and returns a summary of the upload.
     """
 
+
     if "data" not in request.files:
-        return jsonify({"error": "No file provided"}), 400
+        return jsonify({
+            "message": "No file provided"
+        }), 400
 
     file = request.files["data"]
-    content = file.read().decode("utf-8")
+
+    if file.filename == "":
+        return jsonify({
+            "message": "Empty file uploaded"
+        }), 400
+
+    try:
+        content = file.read().decode("utf-8", errors="strict")
+    except UnicodeDecodeError:
+        return jsonify({
+            "message": "Invalid file encoding. Please upload a UTF-8 encoded CSV."
+        }), 400
 
     new_transactions, errors = parse_csv(content)
 
