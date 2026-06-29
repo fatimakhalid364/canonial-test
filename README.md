@@ -26,6 +26,7 @@ The application was developed as an MVP (Minimum Viable Product) with an in-memo
 summer-break/
 │
 ├── app.py
+│
 ├── routes/
 │   ├── transactions.py
 │   └── report.py
@@ -33,6 +34,9 @@ summer-break/
 ├── services/
 │   ├── csv_service.py
 │   └── report_service.py
+│
+├── validators/
+│   └── csv_validation.py
 │
 ├── storage/
 │   └── memory.py
