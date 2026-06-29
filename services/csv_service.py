@@ -3,7 +3,6 @@ import io
 from validators.csv_validation import (
     is_skippable_row,
     validate_row,
-    is_duplicate
 )
 
 def parse_csv(file_content: str):
@@ -15,7 +14,6 @@ def parse_csv(file_content: str):
 
     transactions = []
     errors = []
-    seen = set()
 
     csv_reader = csv.reader(io.StringIO(file_content))
 
@@ -28,9 +26,6 @@ def parse_csv(file_content: str):
 
         if not is_valid:
             errors.append(error)
-            continue
-
-        if is_duplicate(row, seen):
             continue
 
         date, type_, amount, memo = row

@@ -60,21 +60,3 @@ def validate_row(row, index):
     return True, None
 
 
-def is_duplicate(row, seen):
-    """
-    Returns True if row is duplicate, otherwise registers it.
-    Deduplication is based on full row content.
-    """
-
-    key = (
-        row[0].strip(),
-        row[1].strip(),
-        row[2].strip(),
-        row[3].strip()
-    )
-
-    if key in seen:
-        return True
-
-    seen.add(key)
-    return False
