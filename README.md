@@ -23,7 +23,7 @@ The application was developed as an MVP (Minimum Viable Product) with an in-memo
 # Project Structure
 
 ```
-canonical-test/
+canonical-test-main/
 │
 ├── app.py
 │
@@ -67,7 +67,7 @@ Open a terminal and run:
 
 ```bash
 tar -xzf saad_salman_zahid_summer_break.tar.gz
-cd canonical-test
+cd canonical-test-main
 ```
 ---
 
