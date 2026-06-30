@@ -28,7 +28,7 @@ summer-break/
 ├── app.py
 │
 ├── routes/
-│   ├── transactions.py
+│   ├── transaction.py
 │   └── report.py
 │
 ├── services/
@@ -55,13 +55,20 @@ summer-break/
 
 # Installation
 
-## 1. Clone the repository
+## 1. Extract the project archive
+
+### Windows
+
+Right-click the `.tar.gz` file and select **Extract All...** (or use a tool such as 7-Zip or WinRAR).
+
+### macOS / Linux
+
+Open a terminal and run:
 
 ```bash
-git clone <repository-url>
+tar -xzf saad_salman_zahid_summer_break.tar.gz
 cd summer-break
 ```
-
 ---
 
 ## 2. Create a virtual environment
@@ -78,6 +85,19 @@ Activate it:
 venv\Scripts\activate
 ```
 
+---
+
+### macOS / Linux
+
+```bash
+python3 -m venv venv
+```
+
+Activate it:
+
+```bash
+source venv/bin/activate
+```
 ---
 
 ## 3. Install dependencies
@@ -126,9 +146,18 @@ data -> CSV file
 
 Example using curl:
 
+#### Windows (Powershell / CMD)
+
 ```bash
 curl.exe -X POST http://127.0.0.1:5000/transactions -F "data=@sample-data/data.csv"
 ```
+
+#### macOS / Linux
+
+```bash
+curl -X POST http://127.0.0.1:5000/transactions -F "data=@sample-data/data.csv"
+```
+
 
 Example response:
 
