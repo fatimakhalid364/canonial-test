@@ -23,7 +23,7 @@ The application was developed as an MVP (Minimum Viable Product) with an in-memo
 # Project Structure
 
 ```
-summer-break/
+canonical-test/
 │
 ├── app.py
 │
@@ -67,7 +67,7 @@ Open a terminal and run:
 
 ```bash
 tar -xzf saad_salman_zahid_summer_break.tar.gz
-cd summer-break
+cd canonical-test
 ```
 ---
 
@@ -175,11 +175,20 @@ Example response:
 
 Returns a financial summary.
 
-Example:
+Example using curl:
+
+#### Windows (Powershell / CMD)
 
 ```bash
 curl.exe http://127.0.0.1:5000/report
 ```
+
+### macOS / Linux
+
+```bash
+curl http://127.0.0.1:5000/report
+```
+
 
 Example response:
 
